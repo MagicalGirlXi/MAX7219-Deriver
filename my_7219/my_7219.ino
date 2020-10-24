@@ -10,7 +10,12 @@
 #define MATRIX_SHUTDOWN 0x0C
 #define MATRIX_DISPLAY_TEST 0x0F
 
-uint8_t buff[8] = {0x23, 0xBA, 0xA1, 0x87, 0x91, 0x11, 0x1A, 0x00};
+uint8_t turn_left[8] = {0x0,0x20,0x60,0xFF,0xFF,0x60,0x20,0x0};
+uint8_t turn_right[8] = {0x0,0x4,0x6,0xFF,0xFF,0x6,0x4,0x0};
+uint8_t turn_forword[8] = {0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,0x18};
+uint8_t turn_back[8] = {0x18,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18};
+
+
 struct MatrixInitial
 {
     uint8_t RegAddr;
@@ -58,21 +63,27 @@ void initialMatrix()
 {
     Write7219(MATRIX_SHUTDOWN, 0x01);    //开启正常工作模式（0xX1）
     Write7219(MATRIX_DISPLAY_TEST, 0x00); //选择工作模式（0xX0）
-    Write7219(MATRIX_DECODE_MODE, 0xff);  //选用全译码模式
+    Write7219(MATRIX_DECODE_MODE, 0x00);  //选用全译码模式
     Write7219(MATRIX_SCAN_LIMIT, 0x07);   //8只LED全用
     Write7219(MATRIX_INTENSITY, 0x04);    //设置初始亮度
 }
 
 void Display(uint8_t *in)
 {
-    for (byte i = 0; i < 8; i++)
+    for (byte i = 1; i <= 8; i++)
     {
-        Write7219(i,in[i]);
+        Write7219(i,in[i-1]);
     }
 }
 
 void loop()
 {
-    Display(buff);
-    delay(100000);
+    Display(turn_left);
+    delay(2000);
+    Display(turn_right);
+    delay(2000);
+    Display(turn_forword);
+    delay(2000);
+    Display(turn_back);
+    delay(2000);
 }
