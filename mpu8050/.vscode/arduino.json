@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "port": "/dev/cu.wchusbserial14130",
+    "sketch": "mpu8050.ino"
+}
